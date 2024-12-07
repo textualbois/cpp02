@@ -1,5 +1,8 @@
 #include "Fixed.hpp"
 
+
+const int Fixed::_fractional_bits = 8;
+
 Fixed::Fixed()
 	: _value(0) {
 	std::cout << "Default constructor called" << std::endl;
@@ -33,6 +36,11 @@ Fixed&	Fixed::operator=(const Fixed &src) {
 	return *this;
 }
 
+std::ostream& operator<<(std::ostream &os, const Fixed &fixed_number) {
+	os << fixed_number.toFloat();
+	return os;
+}
+
 int Fixed::getRawBits(void) const {
 	std::cout << "getRawBits member function called" << std::endl;
 	return _value;
@@ -43,3 +51,10 @@ void Fixed::setRawBits(int const raw) {
 	_value = raw;
 }
 
+float Fixed::toFloat(void) const {
+	return static_cast<float>(_value) / (1 << _fractional_bits);
+}
+
+int Fixed::toInt(void) const {
+	return _value >> _fractional_bits;
+}
